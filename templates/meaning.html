@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微曉</title>
+    <link rel="stylesheet" href="../static/css/meaning.css">
+    <!-- 字體 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/a69c0e86ad.js" crossorigin="anonymous"></script>
+    <!-- icon -->
+    <link rel="icon" type="image/x-icon" href="../static/img/favicon.ico" />
+    <!-- lightbox插件 -->
+    <link href="../static/css/lightbox.css" rel="stylesheet" />
+    <!-- animate.css -->
+    <link rel="stylesheet" href="../static/css/animate.css" />
+    <!-- js -->
+    <script src="../static/js/script.js"></script>
+    <script src="../static/js/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../static/js/lightbox.js"></script>
+    <script>
+        lightbox.option({
+            'resizeDuration': 200,
+            'maxWidth': 350
+        })
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- nav -->
+        <nav>
+            <div class="nav-logo">
+                <a href="./index.html"><img src="../static/img/Logo.png"></a>
+            </div>
+            <div class="nav-menu">
+                <a href="./merchandise.html">商品區</a>
+                <a href="./voice.html">圖像體驗製作</a>
+                <a href="./meaning.html">感恩文化意義</a>
+                <a href="./about.html" >關於微曉</a>
+            </div>
+            <div class="nav-icon">
+                <a class="fa-brands fa-square-facebook fa-2xl" href="https://www.facebook.com/profile.php?id=61552853390191"
+                  target="_blank"></a>
+                <a class="fa-brands fa-square-instagram fa-flip-vertical fa-2xl"
+                  href="https://www.instagram.com/daily_gratitude_365/" target="_blank"></a>
+                <a class="fa-brands fa-line fa-2xl" href="https://line.me/ti/p/xSlhqfM01c" target="_blank"></a>
+              </div>
+        </nav>
+        <!-- banner -->
+        <div class="banner">
+            <div class="banner-p1 animate__animated animate__bounce">以碎小的材料，賦於偉大的心意，
+                故取其「微」小的意涵， <br>
+                承載溫暖祝福如「曉」光般的感恩之情...</div>
+        </div>
+
+        <!-- story -->
+        <div class="story">
+            <div class="story-p">
+                <p>故事分享區</p>
+            </div>
+            <div class="storysearch">
+                <label for="searchInput">搜尋故事：</label>
+                <input type="text" id="searchInput" name="searchInput">
+                <button class="storysearch_button" onclick="searchStories()">搜尋</button>
+            </div>
+
+            <button id="story-button" onclick="showStoryModal()">分享上傳</button>
+
+            <div id="story-modal">
+                <div id="story-modal-content">
+                    <span id="story-close-button" onclick="closeStoryModal()">&times;</span>
+                    <p>輸入您想對那個人說的話...</p>
+                    我是： <input type="text" id="story-user-name" placeholder="在這裡輸入名字..."> <br>
+                    <br>
+                    <textarea id="story-user-input" rows="15" cols="70" placeholder="在這裡輸入內容..."></textarea>
+                    <br>
+                    <button id="story-upload-button" onclick="uploadStoryTemplate()">確定上傳</button>
+                </div>
+            </div>
+
+            <script>
+                function showStoryModal() {
+                    var storyModal = document.getElementById('story-modal');
+                    storyModal.style.display = 'flex';
+                }
+
+                function closeStoryModal() {
+                    var storyModal = document.getElementById('story-modal');
+                    storyModal.style.display = 'none';
+                }
+
+                function uploadStoryTemplate() {
+                    var storyUserName = document.getElementById('story-user-name').value; 
+                    var storyUserInput = document.getElementById('story-user-input').value;
+                    $.ajax({
+                        url: 'http://localhost:3000/submit-story',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ name: storyUserName, story: storyUserInput }), 
+                        success: function(response) {
+                            console.log("Story uploaded:", response);
+                            closeStoryModal();
+                        },
+                        error: function(error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                }
+
+                function searchStories() {
+                        // 實現搜尋故事的功能
+                        var searchTerm = document.getElementById('searchInput').value;
+                        $.ajax({
+                            url: 'http://localhost:3000/search?term=' + searchTerm,
+                            type: 'GET',
+                            success: function(stories) {
+                                // Clear existing stories
+                                $('#storiesContainer').empty();
+                                // Check if stories are found
+                                console.log("FOUND:"+stories);
+                                if (stories.length === 0) {
+                                    $('#storiesContainer').append('<h1 style="text-align:center;">Not Found.</h1>');
+                                } else {
+                                    // Start of story-img div
+                                    var storiesHtml = '<div class="story-img">';
+                                    stories.forEach(function(story) {
+                                        storiesHtml += '<div class="story-img1">' +
+                                                        '<a href="/images/rwd.png"><img src="../static/img/tiles/forever.png" alt=""></a>' +
+                                                        '<h2>' + story.name + '</h2>' + 
+                                                        `<p>${story.content.length > 32 ? story.content.substring(0, 32) + '...' : story.content}</p>` +
+                                                    '</div>';
+                                        //console.log("CONCON: "+storiesHtml);
+                                    });
+                                    storiesHtml += '</div>';
+                                    // Append stories to container
+                                    $('#storiesContainer').append(storiesHtml);
+                                }
+                            },
+                            error: function(error) {
+                                console.error('Error:', error);
+                            }
+                        });
+                                    
+                    }
+            </script>
+
+
+
+            <div id="storiesContainer">
+
+                <script>
+                    $(document).ready(function() {
+                        $('#storyModal').modal({ show: false });
+                        $.ajax({
+                            url: 'http://localhost:3000/stories',
+                            type: 'GET',
+                            success: function(stories) {
+                                var storiesHtml = '<div class="story-img">';
+                                stories.forEach(function(story, index) {
+                                    if (index < 6) {
+                                        storiesHtml += '<div class="story-img1">' +
+                                                        '<img src="static/img/tiles/forever.png" alt="">' +
+                                                        '<h2>' + story.name + '</h2>' +
+                                                        '<p>' + story.content + '</p>' +
+                                                    '</div>';
+                                    }
+                                });
+                                storiesHtml += '</div>';
+                                $('#storiesContainer').html(storiesHtml);
+    
+                                $('.story-img1').on('click', function() {
+                                    var story = {
+                                        image: $(this).find('img').attr('src'),
+                                        name: $(this).find('h2').text(),
+                                        content: $(this).find('p').text()
+                                    };
+                                    openStoryModal(story);
+                                });
+    
+                                function openStoryModal(story) {
+                                    $('#storyModalImage').attr('src', story.image);
+                                    $('#storyModalName').text(story.name);
+                                    $('#storyModalContent').text(story.content);
+                                    $('#storyModal').modal('show');
+                                    $('.story-img1').show();
+                                }
+    
+                                $('#storyModal').on('hidden.bs.modal', function () {
+                                    $('#storyModalImage').attr('src', '');
+                                    $('#storyModalName').text('');
+                                    $('#storyModalContent').text('');
+                                })
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.error('Error:', textStatus);
+                                console.error('HTTP Error:', errorThrown);
+                                console.error('jqXHR:', jqXHR);
+                            }
+                        });
+                    });
+                    </script> 
+                </div>
+                <!-- 這裡將用 JavaScript 動態生成故事內容 -->
+            <!--生成故事內容的東西？？？ 
+            <div class="story-img">
+                <script>
+                    fetch('http://localhost:3000/stories')
+                        .then(response => response.json())
+                        .then(stories => {
+                            const html = stories.slice(0, 3).map((story, index) => `
+                                <div class="story-img${index + 1}">
+                                    <a href="/images/html.png"><img src="../static/img/tiles/forever.png" alt=""></a>
+                                    <h2>${story.name}</h2>
+                                    <p>${story.content.length > 32 ? story.content.substring(0, 32) + '...' : story.content}</p>
+                                </div>
+                            `).join('');
+
+                            document.querySelector('.story-img').innerHTML = html;
+                        });
+                </script>
+            </div>-->
+        </div>
+
+
+
+
+        <!-- meaning -->
+        <div class="meaning">
+            <div class="meaning-p">
+                <p>感恩倡議背後文化含義</p>
+            </div>
+            <div class="meaning-img1">
+                <div class="meaning-img-foot">
+                    <img src="../static/img/meaning/meaning-img-1.png" alt="">
+                    <p>卡帶是一種有限的媒介，多次播放會損壞錄音磁帶，直到<br>無法再次播放。
+                        這種擁有有限使用次數的音樂專輯在當今<br>追求快速和便捷的時代變得格外珍貴，也讓人們更加懂得<br>“珍惜”。</p>
+                </div>
+                <img class="meaning-img-head" src="../static/img/meaning/meaning-1.png" alt="">
+
+            </div>
+            <div class="meaning-img2">
+                <img class="meaning-img-head" src="../static/img/meaning/meaning-2.png" alt="">
+                <div class="meaning-img-foot">
+                    <img src="../static/img/meaning/meaning-img-2.png" alt="">
+                    <p>花磚文化從日本傳至臺灣後，融入臺灣風情，不僅僅是地位權勢<br>的象徵，更是帶著祝福鑲嵌於家宅上。
+                        延續先人當時祝福的心境<br>，將繪有祝福意喻圖樣，傳遞給送給感恩對象，讓生活中留有美<br>好的祝福及祈願。</p>
+                </div>
+
+
+            </div>
+            <div class="meaning-img3">
+                <div class="meaning-img-foot">
+                    <img src="../static/img/meaning/meaning-img-1.png" alt="">
+                    <p>人類與木材的共生共存關係是跨越時空與文明的，工藝本質<br>源於生活。木材質也有溫暖、紀念感之意。
+                        卡帶選用材料為<br>台灣木材加工廠製作後所產生之邊角料做二次利用</p>
+                </div>
+                <img class="meaning-img-head" src="../static/img/meaning/meaning-3.png" alt="">
+            </div>
+        </div>
+
+        <!-- tiles -->
+        <div class="tiles">
+            <div class="tiles-p">
+                <p>花磚背後文化含義</p>
+            </div>
+            <div class="tiles-img">
+                <div class="tiles-img-1 card-container">
+                    <img class="tiles-img-front cover" src="../static/img/tiles/lucky.png" alt="">
+                    <div class="tiles-img-back">
+                        <h5>幸運</h5>
+                        <p><br>1.酢漿草:四葉極為稀罕，便被賦予幸運之意涵，其每片葉子都代表著不同的意義。<br><br>
+                            2.星星(菱形):希望與期望</p>
+                    </div>
+
+                </div>
+                <div class="tiles-img-2 card-container">
+                    <img class="tiles-img-front cover" src="../static/img/tiles/gogo.png" alt="">
+                    <div class="tiles-img-back">
+                        <h5>不懈</h5>
+                        <p>1.金盞花:因花期長，有堅忍的涵意，其花語有即將到來的幸福，期盼等意象。<br><br>
+
+                            2.方形:堅忍忍耐、穩固、規律、均衡。八角形:堅定、穩固、趨吉避凶。</p>
+
+                    </div>
+                </div>
+                <div class="tiles-img-3 card-container">
+                    <img class="tiles-img-front cover" src="../static/img/tiles/forever.png" alt="">
+                    <div class="tiles-img-back">
+                        <h5>不朽</h5>
+                        <p><br>星辰花:永不凋零，又稱不凋花、勿忘我，有著深厚的情誼的花語含義，表示情感的深厚不可分離，珍惜身邊的人。</p>
+
+                    </div>
+                </div>
+                <div style="width: 100%;"></div>
+                <div class="tiles-img-4 card-container">
+                    <img class="tiles-img-front cover" src="../static/img/tiles/happy.png" alt="">
+                    <div class="tiles-img-back">
+                        <h5>和樂</h5>
+                        <p>1.文心蘭:花語為無憂的快樂。或許是因為文心蘭的外形宛如一個個跳舞的少女，輕巧愉悅，看見它可以忘卻一切的煩惱。<br>
+                            <br>2.圓:和諧、圓融。
+                        </p>
+
+                    </div>
+                </div>
+                <div class="tiles-img-5 card-container">
+                    <img class="tiles-img-front cover" src="../static/img/tiles/health.png" alt="">
+                    <div class="tiles-img-back">
+                        <h5>安康</h5>
+                        <p>
+                            1.波斯婆婆納花:草本植物生命力頑強，可入藥治療疾病，具有健康之意涵。<br><br>
+                            2.圓:保護、圓滿、和諧、完整和無止境</p>
+
+                    </div>
+                </div>
+                <div class="tiles-img-6 card-container">
+                    <img class="tiles-img-front cover" src="../static/img/tiles/money.png" alt="">
+                    <div class="tiles-img-back">
+                        <h5>富貴</h5>
+                        <p>
+                            牡丹花:圓滿、濃情、富貴、吉祥、幸福、雍容華貴、牡丹花開，繁花似錦，燦爛輝煌。
+                            在大唐盛世，全國為之傾倒。自唐宋以來，牡丹成為吉祥幸福、繁榮的象徵。</p>
+
+                    </div>
+                </div>
+                <div style="width: 100%;"></div>
+                <div class="tiles-img-7 card-container">
+                    <img class="tiles-img-front cover" src="../static/img/tiles/happiness.png" alt="">
+                    <div class="tiles-img-back">
+                        <h5>幸福</h5>
+                        <p> 大花飛燕草:給你幸福、自由、正義、輕盈、清靜。「藍色」在眾多顏色中脫穎而出，成為帶給新娘幸福的顏色。
+                            是自然界中少見的藍色花朵，因此在新娘捧花中常見到她的身影。</p>
+
+                    </div>
+                </div>
+                <div class="tiles-img-8 card-container">
+                    <img class="tiles-img-front cover" src="../static/img/tiles/upup.png" alt="">
+                    <div class="tiles-img-back">
+                        <h5>扶搖</h5>
+                        <p> <br>劍蘭:劍蘭的花會由花莖從下而上的慢慢開放，所以有步步高昇之意、節節上升、福祿。</p>
+
+                    </div>
+                </div>
+                <div class="tiles-img-9 card-container">
+                    <img class="tiles-img-front cover" src="../static/img/tiles/heart.png" alt="">
+                    <div class="tiles-img-back">
+                        <h5>順心</h5>
+                        <p> <br>百合花:百合的種頭由鱗片抱合而成，有「百年好合」「百事合意」順利、心想事成等涵意。</p>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- info -->
+        <div class="info">
+            <div class="info-p">
+                <p>展覽資訊</p>
+            </div>
+            <div class="info-h">
+                <h3>雲林科技大學校內展</h3>
+                <h3>台北新一代</h3>
+                <h3>高雄放視大賞</h3>
+            </div>
+            <div class="info-img">
+                <div class="info-img1 card-container">
+                    <div class="info-img-front"></div>
+                    <div class="info-img-back">
+                        <p><span>時間</span><br>
+                            2077/07/07<br>
+                            <span>地點</span><br>雲林科技大學<br>雲林縣斗六市<br>大學路三段123號
+                        </p>
+                    </div>
+
+                </div>
+                <div class="info-img2 card-container">
+                    <div class="info-img-front info-img-front2"></div>
+                    <div class="info-img-back">
+                        <p><span>時間</span><br>
+                            2024/05/24-05/27<br>
+                            <span>地點</span><br>台北南港展覽館<br>南港區經貿二路 1 號
+                        </p>
+                    </div>
+                </div>
+                <div class="info-img3 card-container">
+                    <div class="info-img-front info-img-front3"></div>
+                    <div class="info-img-back">
+                        <p><span>時間</span><br>
+                            2024/05/30-06/01<br>
+                            <span>地點</span><br>高雄展覽館南舘<br>高雄市前鎮區成功二路39號
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <!-- gogo -->
+        <div class="gogo">
+            <div class="gogo-img">
+                <img src="../static/img/meaning/gogo.png" alt="">
+            </div>
+            <div class="gogo-botton">
+                <input type="button" value="立刻去" onclick="location.href='要前往的網頁連結'">
+            </div>
+            <div class="gogo-p">
+                <p>邀請您，一起重拾那份最初、最真摯的情感，並將其永遠銘記。
+                    請加入我們的旅程，讓表達「謝謝」不再只是一句話，而是一種真摯的生活態度。</p>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <footer>
+            <div class="footer-logo"><img src="../static/img/Logo.png" alt=""></div>
+            <div class="footer-icon">
+              <a class="fa-brands fa-square-facebook fa-2xl" href="https://www.facebook.com/profile.php?id=61552853390191"
+                target="_blank"></a>
+              <a class="fa-brands fa-square-instagram fa-flip-vertical fa-2xl"
+                href="https://www.instagram.com/daily_gratitude_365/" target="_blank"></a>
+              <a class="fa-brands fa-line fa-2xl" href="https://line.me/ti/p/xSlhqfM01c" target="_blank"></a>
+            </div>
+
+            <div class="footer-ul">
+                <ul>
+                    <a href="./merchandise.html">
+                      <li>商品區</li>
+                    </a>
+                    <a href="./voice.html">
+                      <li>圖像體驗製作</li>
+                    </a>
+                    <a href="./meaning.html">
+                      <li>感恩文化意義</li>
+                    </a>
+                    <a href="./about.html">
+                      <li>關於微曉</li>
+                    </a>
+                    <a href="">
+                      <li>支持倡議活動</li>
+                    </a>
+                  </ul>
+
+            </div>
+        </footer>
+
+    </div>
+</body>
+
+
+</html>

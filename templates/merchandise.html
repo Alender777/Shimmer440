@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微曉商品區</title>
+  <link rel="stylesheet" href="../static/css/merchandise.css">
+  <!-- 字體 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+  <!-- fontawesome -->
+  <script src="https://kit.fontawesome.com/a69c0e86ad.js" crossorigin="anonymous"></script>
+  <!-- icon -->
+  <link rel="icon" type="image/x-icon" href="../static/img/favicon.ico" />
+  <!-- lightbox插件 -->
+  <link href="../static/css/lightbox.css" rel="stylesheet" />
+  <!-- animate.css -->
+  <link rel="stylesheet" href="../static/css/animate.css" />
+
+  <script src="../static/js/script.js"></script>
+  <script src="../static/js/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../static/js/lightbox.js"></script>
+ 
+  <script>
+    lightbox.option({
+      'resizeDuration': 200,
+      'maxWidth': 350
+    })
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <!-- nav -->
+    <nav>
+      <div class="nav-logo">
+        <a href="./index.html"><img src="../static/img/Logo.png"></a>
+    </div>
+      <div class="nav-menu">
+        <a href="./merchandise.html">商品區</a>
+        <a href="./voice.html">圖像體驗製作</a>
+        <a href="./meaning.html">感恩文化意義</a>
+        <a href="./about.html" >關於微曉</a>
+      </div>
+      <div class="nav-icon">
+        <a class="fa-brands fa-square-facebook fa-2xl" href="https://www.facebook.com/profile.php?id=61552853390191"
+          target="_blank"></a>
+        <a class="fa-brands fa-square-instagram fa-flip-vertical fa-2xl"
+          href="https://www.instagram.com/daily_gratitude_365/" target="_blank"></a>
+        <a class="fa-brands fa-line fa-2xl" href="https://line.me/ti/p/xSlhqfM01c" target="_blank"></a>
+      </div>
+    </nav>
+
+    <!-- banner -->
+    <div class="banner">
+    </div>
+
+
+    <!-- category-toggle -->
+    <div class="category-toggle">
+      <button onclick="toggleCategory('product-cassette')">卡帶</button>
+      <button onclick="toggleCategory('product-ceramic')">陶瓷貼片</button>
+    </div>
+
+
+    <!-- 卡帶商品 -->
+    <main>
+      <div class="product-cassette-all">
+        <!-- 卡帶商品 -->
+        <div class="product-cassette">
+          <h3>幸運卡帶</h3>
+          <br>
+          <img src="../static/img/tiles/lucky.png" alt="卡帶圖片">
+          <p>價格: $10.99</p>
+        </div>
+        <div class="product-cassette">
+          <h3>不懈卡帶</h3>
+          <br>
+          <img src="../static/img/tiles/gogo.png" alt="卡帶圖片">
+          <p>價格: $12.99</p>
+        </div>
+        <div class="product-cassette">
+          <h3>不朽卡帶</h3>
+          <br>
+          <img src="../static/img/tiles/forever.png" alt="卡帶圖片">
+          <p>價格: $15.99</p>
+        </div>
+        <div style="width: 100%;"></div>
+        <div class="product-cassette">
+          <h3>和樂卡帶</h3>
+          <br>
+          <img src="../static/img/tiles/happy.png" alt="卡帶圖片">
+          <p>價格: $15.99</p>
+        </div>
+        <div class="product-cassette">
+          <h3>安康卡帶</h3>
+          <br>
+          <img src="../static/img/tiles/health.png" alt="卡帶圖片">
+          <p>價格: $15.99</p>
+        </div>
+        <div class="product-cassette">
+          <h3>富貴卡帶</h3>
+          <br>
+          <img src="../static/img/tiles/money.png" alt="卡帶圖片">
+          <p>價格: $15.99</p>
+        </div>
+        <div style="width: 100%;"></div>
+        <div class="product-cassette">
+          <h3>幸福卡帶</h3>
+          <br>
+          <img src="../static/img/tiles/happiness.png" alt="卡帶圖片">
+          <p>價格: $15.99</p>
+        </div>
+        <div class="product-cassette">
+          <h3>扶搖卡帶</h3>
+          <br>
+          <img src="../static/img/tiles/upup.png" alt="卡帶圖片">
+          <p>價格: $15.99</p>
+        </div>
+        <div class="product-cassette">
+          <h3>順心卡帶</h3>
+          <br>
+          <img src="../static/img/tiles/heart.png" alt="卡帶圖片">
+          <p>價格: $15.99</p>
+        </div>
+      </div>
+      <!-- 陶瓷貼片商品 -->
+      <div class="product-ceramic-all ">
+        <div class="product-ceramic">
+          <h3>幸運陶瓷貼片</h3>
+          <br>
+          <img src="../static/img/tiles/lucky.png" alt="陶瓷貼片圖片">
+          <p>價格: $19.99</p>
+        </div>
+
+        <div class="product-ceramic">
+          <h3>不懈陶瓷貼片</h3>
+          <br>
+          <img src="../static/img/tiles/gogo.png" alt="陶瓷貼片圖片">
+          <p>價格: $19.99</p>
+        </div>
+
+        <div class="product-ceramic">
+          <h3>不朽陶瓷貼片</h3>
+          <br>
+          <img src="../static/img/tiles/forever.png" alt="陶瓷貼片圖片">
+          <p>價格: $19.99</p>
+        </div>
+
+        <div style="width: 100%;"></div>
+        <div class="product-ceramic">
+          <h3>和樂陶瓷貼片</h3>
+          <br>
+          <img src="../static/img/tiles/happy.png" alt="陶瓷貼片圖片">
+          <p>價格: $19.99</p>
+        </div>
+
+        <div class="product-ceramic">
+          <h3>安康陶瓷貼片</h3>
+          <br>
+          <img src="../static/img/tiles/health.png" alt="陶瓷貼片圖片">
+          <p>價格: $19.99</p>
+        </div>
+
+        <div class="product-ceramic">
+          <h3>富貴陶瓷貼片</h3>
+          <br>
+          <img src="../static/img/tiles/money.png" alt="陶瓷貼片圖片">
+          <p>價格: $19.99</p>
+        </div>
+        <div style="width: 100%;"></div>
+        <div class="product-ceramic">
+          <h3>幸福陶瓷貼片</h3>
+          <br>
+          <img src="../static/img/tiles/happiness.png" alt="陶瓷貼片圖片">
+          <p>價格: $19.99</p>
+        </div>
+
+        <div class="product-ceramic">
+          <h3>扶搖陶瓷貼片</h3>
+          <br>
+          <img src="../static/img/tiles/upup.png" alt="陶瓷貼片圖片">
+          <p>價格: $22.99</p>
+        </div>
+
+        <div class="product-ceramic">
+          <h3>順心陶瓷貼片</h3>
+          <br>
+          <img src="../static/img/tiles/heart.png" alt="陶瓷貼片圖片">
+          <p>價格: $25.99</p>
+        </div>
+
+      </div>
+    </main>
+
+    <script>
+      function toggleCategory(category) {
+        // 隱藏所有商品
+        var products = document.querySelectorAll('.product-cassette, .product-ceramic');
+        products.forEach(function (product) {
+          product.style.display = 'none';
+        });
+
+        // 顯示選定的類別
+        var selectedCategory = document.querySelectorAll('.' + category);
+        selectedCategory.forEach(function (product) {
+          product.style.display = 'block';
+        });
+      }
+
+      // 初始顯示（顯示前5項商品）
+      toggleCategory('product-cassette');
+    </script>
+
+
+    <!-- how -->
+
+    <div class="how">
+
+      <div class="how-content">
+        <div class="how-title">
+          <h2>如何購買？</h2>
+        </div>
+        <div class="how-obj">
+          <div class="how-text">
+            <p>
+              1.加入我們的賴帳號好友-微曉 Shimmer<br>
+              2.填寫以下資訊並回傳微曉
+              <li> 購買人姓名</li>
+              <li>電話</li>
+              <li>收件人姓名</li>
+              <li>寄送地址</li><br>
+              3.微曉確定商品資訊並回傳價格確定 <br>
+              4.確定金額後以line pay 付款 <br>
+              5.微曉出貨
+            </p>
+          </div>
+
+          <img src="..../static/img/merchandise/code.png" alt="">
+          <img src="..../static/img/merchandise/img.png" alt="">
+
+        </div>
+      </div>
+    </div>
+    <!-- contect -->
+    <div class="contect">
+      <div class="contect-p">
+        <p>聯絡我們</p>
+      </div>
+      <div class="contect-img">
+        <img src="../static/img/about/contect-img.png" alt="">
+        <a class="fa-brands fa-square-facebook fa-2xl fb"></a>
+        <p class="fb-p">daily_gratitude_365</p>
+        <a class="fa-brands fa-square-instagram fa-flip-vertical fa-2xl ig"></a>
+        <p class="ig-p">daily_gratitude_365</p>
+        <a class="fa-brands fa-line fa-2xl li"></a>
+      </div>
+    </div>
+    <!-- footer -->
+    <footer>
+      <div class="footer-logo"><img src="../static/img/Logo.png" alt=""></div>
+      <div class="footer-icon">
+        <a class="fa-brands fa-square-facebook fa-2xl" href="https://www.facebook.com/profile.php?id=61552853390191"
+          target="_blank"></a>
+        <a class="fa-brands fa-square-instagram fa-flip-vertical fa-2xl"
+          href="https://www.instagram.com/daily_gratitude_365/" target="_blank"></a>
+        <a class="fa-brands fa-line fa-2xl" href="https://line.me/ti/p/xSlhqfM01c" target="_blank"></a>
+      </div>
+
+      <div class="footer-ul">
+        <ul>
+          <a href="./merchandise.html">
+            <li>商品區</li>
+          </a>
+          <a href="./voice.html">
+            <li>圖像體驗製作</li>
+          </a>
+          <a href="./meaning.html">
+            <li>感恩文化意義</li>
+          </a>
+          <a href="./about.html">
+            <li>關於微曉</li>
+          </a>
+          <a href="">
+            <li>支持倡議活動</li>
+          </a>
+        </ul>
+
+      </div>
+    </footer>
+
+
+
+
+  </div>
+</body>
+
+
+
+</div>
+</body>
+
+
+
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微曉</title>
+
+  <link rel="stylesheet" href="../static/css/voice.css" />
+  <!-- 字體 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+  <!-- fontawesome -->
+  <script src="https://kit.fontawesome.com/a69c0e86ad.js" crossorigin="anonymous"></script>
+  <!-- icon -->
+
+  <link rel="icon" type="image/x-icon" href="../static/img/favicon.ico" />
+  <!-- lightbox插件 -->
+
+  <link href="../static/css/lightbox.css" rel="stylesheet" />
+  
+  <!-- animate.css -->
+  <link rel="stylesheet" href="../static/css/animate.css" />
+  <script src="../server/server.js"></script>
+  <script src="../static/js/script.js"></script>
+  <script src="../static/js/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../static/js/lightbox.js"></script>
+  <script>
+    lightbox.option({
+      'resizeDuration': 200,
+      'maxWidth': 350
+    })
+  </script>
+
+  <script src="../static/js/recorder.mp3.min.js"></script>
+
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- nav -->
+    <nav>
+      <div class="nav-logo">
+        <!--        <a href="./index.html"><img src="../static/img/Logo.png"></a>-->
+        <a href="./index.html"><img src="../static/img/Logo.png"></a>
+      </div>
+      <div class="nav-menu">
+        <a href="./merchandise.html">商品區</a>
+        <a href="./voice.html">圖像體驗製作</a>
+        <a href="./meaning.html">感恩文化意義</a>
+        <a href="./about.html">關於微曉</a>
+      </div>
+      <div class="nav-icon">
+        <div class="nav-icon">
+          <a class="fa-brands fa-square-facebook fa-2xl" href="https://www.facebook.com/profile.php?id=61552853390191"
+            target="_blank"></a>
+          <a class="fa-brands fa-square-instagram fa-flip-vertical fa-2xl"
+            href="https://www.instagram.com/daily_gratitude_365/" target="_blank"></a>
+          <a class="fa-brands fa-line fa-2xl" href="https://line.me/ti/p/xSlhqfM01c" target="_blank"></a>
+        </div>
+    </nav>
+    <!-- banner -->
+    <div class="banner">
+      <div class="banner-p0">
+        <img src="../static/img/voice/bg000.png" alt="">
+        <p>將話語轉譯，分析想傳遞的音調及頻率，共同創造你我間專屬祝福圖像</p>
+      </div>
+      <div class="banner-p">
+        <li>
+          <ol>●感恩情懷倡議<br><span class="banner-p2">錄製聲音傳遞心意，用話語表達情感</span></ol>
+          <ol>●祝福圖像轉譯<br><span class="banner-p2">解析傳遞聲音頻率，傳遞專屬圖像祝福</span></ol>
+          <ol>●數位永存心意<br><span class="banner-p2">將抽象情感用頻率解析，創造數位記憶</span></ol>
+        </li>
+      </div>
+
+    </div>
+    <!-- speak -->
+    <div class="speak">
+      <img src="../static/img/voice/2.speak.png" alt="">
+      <p>用聲音向那位一直在你身旁支持你的人說一段感激話語。錄下你的心聲，傳遞你最真摯的情感</p>
+    </div>
+    <!-- speaking -->
+
+    <div class="speaking">
+      <div class="speaking-record">
+        <img src="../static/img/voice/3.record.png" alt="">
+        <!-- record -->
+        <div class="record">
+
+            <input type="button" onclick="startRec()" value="開始錄音">
+            <input type="button" onclick="playRec()" value="結束並播放">
+            <input type="button" onclick="uploadRec()" value="結束並上傳">
+            <div id="speakcontainer"></div>
+            <div id="uploadStatus1"></div>
+        </div>
+
+
+        <script>
+          var rec;
+          let uploadedFilePath; // 用來儲存上傳音檔的路徑
+
+          function startRec() {
+            rec = Recorder();
+
+            rec.open(function () {
+              rec.start();
+            }, function (msg, isUserNotAllow) {
+              alert((isUserNotAllow ? "使用者拒絕了許可權，" : "") + "無法錄音:" + msg);
+            });
+          }
+
+          function uploadRec() {
+            if (savedBlob) {
+                var form = new FormData();
+                form.append("upfile", savedBlob, "recorder.mp3");
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "http://localhost:3000/upload_voice");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            console.log("上傳成功");
+
+                            var displayedImageElement = document.getElementById('displayedImage');
+                            displayedImageElement.src = xhr.responseText;
+                            document.getElementById('uploadStatus1').innerHTML = '<p style="color: green;">上傳成功！</p>';
+                            uploadedFilePath = xhr.responseText;
+                            console.log(uploadedFilePath);
+                            downloadImage(uploadedFilePath);
+                        } else {
+                            console.error("上傳失敗:" + xhr.status + " " + xhr.statusText + " " + xhr.responseText);
+                            document.getElementById('uploadStatus1').innerHTML = '<p style="color: red;">上傳失敗，請再試一次。</p>';
+                        }
+                    }
+                };
+                xhr.send(form);
+            } else {
+                console.error("錄音尚未完成或失敗");
+            }
+          }
+
+          function playRec() {
+            rec.stop(function (blob, duration) {
+                savedBlob = blob; // Save the blob for later use
+                var speakContainer = document.getElementById('speakcontainer');
+                var audio = document.createElement("audio");
+                audio.controls = true;
+
+                audio.src = URL.createObjectURL(blob);
+                speakContainer.innerHTML = '';
+                speakContainer.appendChild(audio);
+                audio.play();
+            }, function (msg) {
+              console.error("錄音失敗:" + msg);
+            });
+          }
+        </script>
+      </div>
+
+      <div class="speaking-upload">
+        <img src="../static/img/voice/4.upload.png" alt="">
+        <!-- upload -->
+        <form action="" method="post" enctype="multipart/form-data">
+          <label for="audioFile">選擇音檔：</label>
+          <input type="file" id="audioFile" name="audioFile" accept="audio/*">
+          <p>(限WAV格式)</p>
+          <br>
+
+          <input id="uploadsubmit" type="submit" value="上傳">
+        </form>
+
+        <div id="uploadStatus"></div>
+
+        <script>
+          
+
+          document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault(); // 防止表單正常提交
+
+            // 取得選擇的檔案
+            var fileInput = document.getElementById('audioFile');
+            var file = fileInput.files[0];
+
+            // 檢查檔案類型
+            if (!file || !file.type.startsWith('audio/wav')) {
+              alert('請選擇正確的WAV格式音檔');
+              return;
+            }
+
+            // 建立 FormData 物件，用來包裝表單數據
+            var formData = new FormData();
+            formData.append('upfile', file);
+
+
+            // 這裡可以使用 AJAX 或其他方法將音檔上傳至伺服器
+            // 例如，使用 fetch API 進行上傳
+            fetch('http://localhost:3000/upload_voice', {
+              method: 'POST',
+              body: formData
+            })
+              .then(response => response.text())
+              .then(data => {
+                  //var displayedImageElement = document.getElementById('displayedImage');
+                  //displayedImageElement.src = data;
+
+                // 顯示上傳成功的提示
+                console.log('上傳成功:', data);
+                document.getElementById('uploadStatus').innerHTML = '<p style="color: green;">上傳成功！</p>';
+                
+                // 儲存上傳音檔的路徑
+                uploadedFilePath = data;
+                console.log(uploadedFilePath);
+                downloadImage(uploadedFilePath);
+              })
+              .catch(error => {
+                console.error('上傳失敗:', error);
+
+                // 顯示上傳失敗的提示
+                document.getElementById('uploadStatus').innerHTML = '<p style="color: red;">上傳失敗，請再試一次。</p>';
+              });
+          });
+        </script>
+      </div>
+    </div>
+    <!-- inging -->
+    <div class="inging">
+      <div class="inging-p">
+        <img src="" alt="">
+        <p>將感激之情融入獨特音調，創造聲音專屬樣貌。以話語表達謝意，聲音特質分析傳達祝福。</p>
+      </div>
+      <div class="inging-button">
+        <input type="button" value="生成聲音樣貌" onclick="showFullscreenVideo()">
+      </div>
+      <div id="overlay" class="overlay" onclick="hideFullscreenVideo()"></div>
+
+      <div id="videoContainer" class="fullscreen-video">
+        <video controls muted onended="hideFullscreenVideo()" id="fullscreenVideo" autoplay>
+          <source id="videoSource" src="../static/50-1_1-3.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    
+      <script>
+        async function showFullscreenVideo(id) {
+          var overlay = document.getElementById("overlay");
+          var videoContainer = document.getElementById("videoContainer");
+        
+          overlay.style.display = "block";
+          videoContainer.style.display = "block";
+        
+          // 下載圖片並設置為影片的 src
+          const imagePath = globalImagePath;
+          if (!imagePath) {
+            console.error('Failed to download image');
+            return;
+          }
+          const imageName = imagePath.split('/').pop().replace('.png', '');
+          console.log("Num "+imageName);
+          const tmpNum = Math.ceil((parseInt(imageName)) / 3) ;
+          console.log("T "+tmpNum);
+        
+          // 設置影片的 src
+          var videoSource = document.getElementById('videoSource');
+          videoSource.src = '../static/vid/50-${tmpNum}_${tmpNum*3-2}-${tmpNum*3}.mp4';
+        
+          // 重新加載影片
+          var video = document.getElementById('fullscreenVideo');
+          video.load();
+          video.play();
+        }
+
+        function hideFullscreenVideo() {
+          var overlay = document.getElementById("overlay");
+          var videoContainer = document.getElementById("videoContainer");
+
+          overlay.style.display = "none";
+          videoContainer.style.display = "none";
+        }
+
+
+      </script>
+    </div>
+
+
+
+    <!-- picdownload -->
+    <div class="picdownload">
+      <div class="picdownload-img">
+        <div id="picdownloadImgContainer"><img id="displayedImage" src="../static/img/voice/download/picdownload.png" alt=""></div>
+      </div>
+      <div class="picdownload-btn">
+        <input type="button" onclick="downloadDisplayedImage()" value="下載圖片">
+      </div>
+      
+      <script>
+        var globalImagePath; 
+        async function downloadImage(id) {
+          // 檢查 id 參數的值
+          if (id === undefined) {
+            console.error('Error: id is undefined');
+            return;
+          }
+        
+          // 獲取圖片元素
+          var image = document.getElementById('displayedImage');
+          console.log("O "+id)
+        
+          try {
+            // 從 localhost:3000/voice/id 獲取音檔並處理它
+            let response = await fetch('http://localhost:3000/voice/' + id);
+        
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            } else {
+              console.log('Network response was ok');
+            }
+        
+            let data = await response.json();
+            console.log('Response data:', data);
+        
+            if (data.result === undefined) {
+              throw new Error('Error: data.result is undefined');
+            }
+        
+            var imagePath = data.result.trim();
+            console.log('Image path:', imagePath);
+        
+            image.src = imagePath;
+            globalImagePath = imagePath;
+            console.log('Image src set to:', image.src);
+          } catch (error) {
+            console.error('Fetch Error:', error);
+          }
+        }
+        function downloadDisplayedImage() {
+          var image = document.getElementById('displayedImage');
+          var link = document.createElement('a');
+
+          link.download = 'downloaded_image.png';
+          link.href = image.src;
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      </script>
+    </div>
+
+
+    <!-- story -->
+    <div class="story">
+      <div class="story-p">
+        <p>故事分享去</p>
+      </div>
+      <div class="story-speak">
+        <img src="../static/img/voice/story-speak.png" alt="">
+        <p>光用說的還不夠,期待用文字跟更多人分享...</p>
+      </div>
+      <div class="story-img">
+        <img src="../static/img/about/feature-img1.png" alt="">
+      </div>
+      <div class="story-button">
+        <input type="button" value="故事分享去">
+      </div>
+      <div class="story-bg">
+      </div>
+    </div>
+
+    <!-- activity-->
+    <div class="activity">
+      <div class="activity-p">
+        <p>參與其他感恩倡議活動</p>
+      </div>
+
+      <div class="activity-img1">
+        <img src="../static/img/voice/activity-img1.png" alt="">
+        <br>
+        <input type="button" value="商品區">
+        <p>購買商品，實際送達專屬你的心意</p>
+      </div>
+      <div class="activity-img2">
+        <img src="../static/img/voice/activity-img2.png" alt="">
+        <br>
+        <input type="button" value="支持去">
+        <p>喜歡微曉理念，實際支持倡議活動</p>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <footer>
+      <div class="footer-logo"><img src="../static/img/Logo.png" alt=""></div>
+      <div class="footer-icon">
+        <a class="fa-brands fa-square-facebook fa-2xl" href="https://www.facebook.com/profile.php?id=61552853390191"
+          target="_blank"></a>
+        <a class="fa-brands fa-square-instagram fa-flip-vertical fa-2xl"
+          href="https://www.instagram.com/daily_gratitude_365/" target="_blank"></a>
+        <a class="fa-brands fa-line fa-2xl" href="https://line.me/ti/p/xSlhqfM01c" target="_blank"></a>
+      </div>
+
+      <div class="footer-ul">
+        <ul>
+          <a href="./merchandise.html">
+            <li>商品區</li>
+          </a>
+          <a href="./voice.html">
+            <li>圖像體驗製作</li>
+          </a>
+          <a href="./meaning.html">
+            <li>感恩文化意義</li>
+          </a>
+          <a href="./about.html">
+            <li>關於微曉</li>
+          </a>
+          <a href="">
+            <li>支持倡議活動</li>
+          </a>
+        </ul>
+
+      </div>
+    </footer>
+
+
+
+  </div>
+
+
+</body>
+
+
+
+</html>
