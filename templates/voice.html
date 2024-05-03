@@ -260,11 +260,12 @@
           const imageName = imagePath.split('/').pop().replace('.png', '');
           console.log("Num "+imageName);
           const tmpNum = Math.ceil((parseInt(imageName)) / 3) ;
+          //tmpNum = parseInt(tmpNum);
           console.log("T "+tmpNum);
         
           // 設置影片的 src
           var videoSource = document.getElementById('videoSource');
-          videoSource.src = '../static/vid/50-${tmpNum}_${tmpNum*3-2}-${tmpNum*3}.mp4';
+          videoSource.src = '../static/vid/50-'+ tmpNum +'_'+ (tmpNum*3-2) +'-'+ (tmpNum*3) +'.mp4';
         
           // 重新加載影片
           var video = document.getElementById('fullscreenVideo');
