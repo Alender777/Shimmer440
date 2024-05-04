@@ -118,7 +118,7 @@
                 form.append("upfile", savedBlob, "recorder.mp3");
 
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "http://localhost:3000/upload_voice");
+                xhr.open("POST", "/upload_voice");
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
@@ -197,7 +197,7 @@
 
             // 這裡可以使用 AJAX 或其他方法將音檔上傳至伺服器
             // 例如，使用 fetch API 進行上傳
-            fetch('http://localhost:3000/upload_voice', {
+            fetch('/upload_voice', {
               method: 'POST',
               body: formData
             })

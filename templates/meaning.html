@@ -101,7 +101,7 @@
                     var storyUserName = document.getElementById('story-user-name').value; 
                     var storyUserInput = document.getElementById('story-user-input').value;
                     $.ajax({
-                        url: 'http://localhost:3000/submit-story',
+                        url: '/submit-story',
                         type: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({ name: storyUserName, story: storyUserInput }), 
@@ -119,7 +119,7 @@
                         // 實現搜尋故事的功能
                         var searchTerm = document.getElementById('searchInput').value;
                         $.ajax({
-                            url: 'http://localhost:3000/search?term=' + searchTerm,
+                            url: '/search?term=' + searchTerm,
                             type: 'GET',
                             success: function(stories) {
                                 // Clear existing stories
@@ -160,7 +160,7 @@
                     $(document).ready(function() {
                         $('#storyModal').modal({ show: false });
                         $.ajax({
-                            url: 'http://localhost:3000/stories',
+                            url: '/stories',
                             type: 'GET',
                             success: function(stories) {
                                 var storiesHtml = '<div class="story-img">';
