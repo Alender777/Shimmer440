@@ -22,24 +22,6 @@ const storySchema = new mongoose.Schema({
 
 const Story = mongoose.model('Story', storySchema);
 
-app.get('/:file?', (req, res) => {
-    let fileName = req.params.file;
-    
-    // If no file is specified, default to 'index.html'
-    if (!fileName) {
-        fileName = 'index.html';
-    }
-
-    const filePath = path.join(__dirname, '../templates', fileName);
-    
-    // Set the Content-Type to HTML for .html files
-    if (path.extname(fileName) === '.html') {
-        res.type('html');
-    }
-    // Add more conditions here for other file types if needed
-
-    res.sendFile(filePath);
-});
 
 app.use('/static', express.static(path.join(__dirname, '../static')));
 
@@ -167,6 +149,25 @@ app.get('/voice/:id', async (req, res) => {
   } catch (err) {
     res.status(500).send('Server error: ' + err.message);
   }
+});
+
+app.get('/:file?', (req, res) => {
+  let fileName = req.params.file;
+  
+  // If no file is specified, default to 'index.html'
+  if (!fileName) {
+      fileName = 'index.html';
+  }
+
+  const filePath = path.join(__dirname, '../templates', fileName);
+  
+  // Set the Content-Type to HTML for .html files
+  if (path.extname(fileName) === '.html') {
+      res.type('html');
+  }
+  // Add more conditions here for other file types if needed
+
+  res.sendFile(filePath);
 });
 
 //listen to port
