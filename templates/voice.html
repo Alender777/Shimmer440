@@ -311,7 +311,7 @@
         
           try {
             // 從 localhost:3000/voice/id 獲取音檔並處理它
-            let response = await fetch('http://localhost:3000/voice/' + id);
+            let response = await fetch('/voice/' + id);
         
             if (!response.ok) {
               throw new Error('Network response was not ok');

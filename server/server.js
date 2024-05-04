@@ -11,7 +11,7 @@ app.use(express.json()); // for parsing application/json
 
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1:27017/storyDB')
+mongoose.connect('mongodb+srv://chijack520:rvNa0JLOLBaAPOUz@storyteller.ogcbua2.mongodb.net/?retryWrites=true&w=majority&appName=StoryTeller')
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Could not connect to MongoDB', err));
 
