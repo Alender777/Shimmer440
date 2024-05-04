@@ -117,7 +117,7 @@ function uploadStory() {
 
 function loadStories() {
     $.ajax({
-        url: 'http://localhost:3000/stories', // 請改成你的伺服器放 stories 的網址
+        url: '/stories', // 請改成你的伺服器放 stories 的網址
         type: 'GET',
         success: function(stories) {
             $('#storiesContainer').empty();
