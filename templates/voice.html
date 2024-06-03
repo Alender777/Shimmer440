@@ -104,8 +104,10 @@
 
           function startRec() {
             rec = Recorder();
-
+          
             rec.open(function () {
+              // Update the message when recording starts
+              document.getElementById('recordingMessage').innerText = '開始錄音中...';
               rec.start();
             }, function (msg, isUserNotAllow) {
               alert((isUserNotAllow ? "使用者拒絕了許可權，" : "") + "無法錄音:" + msg);
