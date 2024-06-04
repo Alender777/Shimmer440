@@ -162,17 +162,16 @@ nav {
 }
 
 .banner-p2 {
-    display: grid;
-    grid-area: p2;
-    margin-top: 20%;
-    margin-left: 26%;
-    align-self: center;
+    position: absolute;
+    top: 100%; /* 根據需要調整此值以控制垂直位置 */
+    right: 5%; /* 根據需要調整此值以控制水平位置 */
     line-height: 2.2;
-    color: var(--color-orange);
+    color: var(--color-blue);
     font-weight: 600;
     letter-spacing: 1.6px;
     font-size: 15px;
 }
+
 
 
 /******* activity *******/

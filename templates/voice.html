@@ -93,7 +93,8 @@
             <input type="button" onclick="startRec()" value="開始錄音">
             <input type="button" onclick="playRec()" value="結束並播放">
             <input type="button" onclick="uploadRec()" value="結束並上傳">
-            <div id="speakcontainer"></div>
+            <div id="recordingMessage"></div>
+            <div id="speakcontainer" style="color: blue;"></div>
             <div id="uploadStatus1"></div>
         </div>
 
@@ -107,7 +108,7 @@
           
             rec.open(function () {
               // Update the message when recording starts
-              document.getElementById('recordingMessage').innerText = '開始錄音中...';
+              document.getElementById('recordingMessage').innerHTML = '<p style="color: blue;">開始錄音中...</p>';
               rec.start();
             }, function (msg, isUserNotAllow) {
               alert((isUserNotAllow ? "使用者拒絕了許可權，" : "") + "無法錄音:" + msg);
