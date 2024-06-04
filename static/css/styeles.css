@@ -582,6 +582,7 @@ nav {
 .tiles-button {
     display: grid;
     grid-area: t3;
+    justify-self: start;
 }
 
 .tiles-button input {
