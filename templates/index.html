@@ -223,14 +223,13 @@
           if (modal) {
             console.log('Modal before hiding:', modal);
             modal.style.display = "none";
-            // 强制更新样式
             modal.style.setProperty("display", "none", "important");
             console.log('Modal after hiding:', modal);
             console.log('Computed style:', window.getComputedStyle(modal).display);
             setTimeout(() => {
               console.log('Final computed style:', window.getComputedStyle(modal).display);
               isClosingModal = false; // Reset the flag after a short delay
-            }, 1000); // 延迟检查
+            }, 1000);
           } else {
             console.error('Modal not found:', modalId);
           }
@@ -259,7 +258,6 @@
           console.log('Computed style:', window.getComputedStyle(modal).display);
         }
       
-        // 监视模态窗口的变更
         var modalObserver = new MutationObserver(function(mutationsList, observer) {
           for (var mutation of mutationsList) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
@@ -273,7 +271,6 @@
           modalObserver.observe(modal, { attributes: true });
         }
       
-        // 绑定点击事件
         document.getElementById('showDetailsTrigger').addEventListener('click', showDetails);
         document.getElementById('closeModalBtn').addEventListener('click', function() {
           isClosingModal = true; // Set the flag to prevent immediate re-triggering

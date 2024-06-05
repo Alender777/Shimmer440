@@ -157,56 +157,57 @@
             <div id="storiesContainer">
 
                 <script>
-                    $(document).ready(function() {
-                        $('#storyModal').modal({ show: false });
-                        $.ajax({
-                            url: '/stories',
-                            type: 'GET',
-                            success: function(stories) {
-                                var storiesHtml = '<div class="story-img">';
-                                stories.forEach(function(story, index) {
-                                    if (index < 6) {
-                                        storiesHtml += '<div class="story-img1">' +
-                                                        '<img src="static/img/tiles/forever.png" alt="">' +
-                                                        '<h2>' + story.name + '</h2>' +
-                                                        '<p>' + story.content + '</p>' +
-                                                    '</div>';
-                                    }
-                                });
-                                storiesHtml += '</div>';
-                                $('#storiesContainer').html(storiesHtml);
-    
-                                $('.story-img1').on('click', function() {
-                                    var story = {
-                                        image: $(this).find('img').attr('src'),
-                                        name: $(this).find('h2').text(),
-                                        content: $(this).find('p').text()
-                                    };
-                                    openStoryModal(story);
-                                });
-    
-                                function openStoryModal(story) {
-                                    $('#storyModalImage').attr('src', story.image);
-                                    $('#storyModalName').text(story.name);
-                                    $('#storyModalContent').text(story.content);
-                                    $('#storyModal').modal('show');
-                                    $('.story-img1').show();
+                $(document).ready(function() {
+                    $('#storyModal').modal({ show: false });
+                    $.ajax({
+                        url: '/stories',
+                        type: 'GET',
+                        success: function(stories) {
+                            var storiesHtml = '<div class="row">';
+                            stories.forEach(function(story, index) {
+                                if (index % 6 === 0 && index !== 0) {
+                                    storiesHtml += '</div><div class="row">';
                                 }
-    
-                                $('#storyModal').on('hidden.bs.modal', function () {
-                                    $('#storyModalImage').attr('src', '');
-                                    $('#storyModalName').text('');
-                                    $('#storyModalContent').text('');
-                                })
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                console.error('Error:', textStatus);
-                                console.error('HTTP Error:', errorThrown);
-                                console.error('jqXHR:', jqXHR);
+                                storiesHtml += '<div class="col-md-4 story-img1">' +
+                                                '<img src="static/img/tiles/forever.png" alt="">' +
+                                                '<h2>' + story.name + '</h2>' +
+                                                '<p>' + story.content + '</p>' +
+                                               '</div>';
+                            });
+                            storiesHtml += '</div>';
+                            $('#storiesContainer').html(storiesHtml);
+                
+                            $('.story-img1').on('click', function() {
+                                var story = {
+                                    image: $(this).find('img').attr('src'),
+                                    name: $(this).find('h2').text(),
+                                    content: $(this).find('p').text()
+                                };
+                                openStoryModal(story);
+                            });
+                
+                            function openStoryModal(story) {
+                                $('#storyModalImage').attr('src', story.image);
+                                $('#storyModalName').text(story.name);
+                                $('#storyModalContent').text(story.content);
+                                $('#storyModal').modal('show');
+                                $('.story-img1').show();
                             }
-                        });
+                
+                            $('#storyModal').on('hidden.bs.modal', function () {
+                                $('#storyModalImage').attr('src', '');
+                                $('#storyModalName').text('');
+                                $('#storyModalContent').text('');
+                            })
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error('Error:', textStatus);
+                            console.error('HTTP Error:', errorThrown);
+                            console.error('jqXHR:', jqXHR);
+                        }
                     });
-                    </script> 
+                });
+                </script> 
                 </div>
                 <!-- 這裡將用 JavaScript 動態生成故事內容 -->
             <!--生成故事內容的東西？？？ 
