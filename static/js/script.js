@@ -1,25 +1,5 @@
 
-function showDetails() {
-    // Get the modal and its components
-    var modal = document.getElementById("myModal");
-    var modalImage = document.getElementById("modalImage");
-    var modalTitle = document.getElementById("modalTitle");
-    var modalDescription = document.getElementById("modalDescription");
-  
-    // Set the modal content based on the clicked element
-    modalImage.src = "../img/tiles/forever.png"; // Update with your image source
-    modalTitle.innerText = "Lizzy";
-    modalDescription.innerText = "在我高中的時候，除了平常要學習大考要讀的的學科外，我有額外的興趣—寫作。我從小對文字的理解能力很高，對於文字的形音義這種基本文字素養很了解，但是我卻很喜歡把文字拿去「操弄」，從作文、新詩到古詩、詞，各種文體都是我的挑戰範圍。然而在台灣的大考制度底下，這種非學科外的興趣往往不是主流，時常會聽聞別人建議我放棄的聲音，令我幾度想要放棄創作。直到我遇到了高二的國文老師，她叫玫瑰，她喜歡人家叫她Rose，由名知人，她是一個非常颯爽又溫暖的老師，對於我的創作這件愛好非常鼓勵，常常會給我許多建議，我也在她的鼓勵下去參加創作比賽，不斷修正我的寫法，後來也拿下了新詩組第一名。這讓我非常的想感謝她，如果不是她告訴我可以堅持夢想，對於自己喜歡的事物可以去勇敢嘗試，不斷修正，我想我也不會獲得這麼好的成績，也不會對自己的這項興趣保有熱忱。她是我非常想感謝的老師，不只教我知識而已，更多的是對我的興趣的肯定，讓我從此對夢想的態度改觀，變得正向積極，影響我很深，非常感謝有她。"; // Update with your description
-  
-    // Display the modal
-    modal.style.display = "block";
-  }
-  
-  function closeModal() {
-    // Close the modal
-    var modal = document.getElementById("myModal");
-    modal.style.display = "none";
-  }
+
   
 
 
