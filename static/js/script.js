@@ -44,10 +44,7 @@
     
 
 // script.js
-document.addEventListener('DOMContentLoaded', () => {
-    // 頁面載入後執行的初始化工作
-    loadStories(); // 可以在頁面載入時加載現有故事
-});
+
 
 function searchStories() {
     // 實現搜尋故事的功能
@@ -83,32 +80,81 @@ function uploadStory() {
     });
 }
 
-function loadStories() {
-    $.ajax({
-        url: '/stories', // 請改成你的伺服器放 stories 的網址
-        type: 'GET',
-        success: function(stories) {
-            $('#storiesContainer').empty();
-            console.log("Number of stories:", stories.length);
-            
-            var storiesDiv = $('<div class="story-img"></div>');
-            $('#storiesContainer').append(storiesDiv);
-
-            stories.slice(0, 3).forEach(function(story, index) {
-                var storyDiv = $(`<div class="story-img${index + 1}"></div>`);      
-                storyDiv.append(`
-                    <a href="/images/html.png"><img src="../static/img/tiles/forever.png" alt=""></a>
-                    <h2>${story.name}</h2>
-                    <p>${story.content.length > 32 ? story.content.substring(0, 32) + '...' : story.content}</p>
-                `);
-                storiesDiv.append(storyDiv);
-            });
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Error fetching stories:', textStatus, errorThrown);
-        }
+document.addEventListener("DOMContentLoaded", function() {
+    function closeModal(event) {
+      // 阻止事件冒泡
+      event.stopPropagation();
+      console.log('closeModal is called');
+      var modal = document.getElementById('myModal');
+      if (modal) {
+        modal.style.display = "none";
+        console.log('Modal is now hidden');
+      }
+    }
+  
+    function showDetails(event, story) {
+      event.stopPropagation();
+      console.log('showDetails is called with story:', story);
+      var modal = document.getElementById("myModal");
+      var modalImage2 = document.getElementById("modalImage2");
+      var modalTitle = document.getElementById("modalTitle");
+      var modalDescription = document.getElementById("modalDescription");
+      if (!modalImage2) {
+        console.error('modalImage2 element not found');
+        return;
+    }
+      modalImage2.src = "../static/img/tiles/forever.png";
+      modalTitle.innerText = story.name;
+      modalDescription.innerText = story.content;
+  
+      // 显示模态框
+      modal.style.display = "block";
+    }
+  
+    // 绑定关闭按钮事件监听器
+    var closeModalButton = document.getElementById('closeModalBtn');
+    if (closeModalButton) {
+      closeModalButton.addEventListener('click', closeModal);
+    }
+  
+    window.onload = function loadStories() {
+      $.ajax({
+          url: '/stories', 
+          type: 'GET',
+          success: function(stories) {
+              $('#storiesContainer').empty();
+              console.log("Number of stories:", stories.length);
+              
+              var storiesDiv = $('<div class="story-img"></div>');
+              $('#storiesContainer').append(storiesDiv);
+  
+              stories.slice(0, 6).forEach(function(story, index) {
+                  if (index % 3 === 0 && index !== 0) {
+                      rowDiv = $('<div class="row"></div>');
+                      $('#storiesContainer').append(rowDiv);
+                  }
+                  var storyDiv = $(`<div class="story-img${(index % 3) + 1}"></div>`);      
+                  storyDiv.append(`
+                      <img src="../static/img/tiles/forever.png" alt="">
+                      <h2>${story.name}</h2>
+                      <p>${story.content.length > 32 ? story.content.substring(0, 32) + '...' : story.content}</p>
+                  `);
+                  storiesDiv.append(storyDiv);
+  
+                  storyDiv.on('click', function(event) {
+                      showDetails(event, story);
+                  });
+              });
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              console.error('Error fetching stories:', textStatus, errorThrown);
+          }
       });
-}
+    }
+  
+    // 调用loadStories函数加载故事
+    loadStories();
+  });
 
 function createStoryElement(story) {
     // 創建故事元素
@@ -128,3 +174,7 @@ function createStoryElement(story) {
 
     return storyDiv;
 }
+document.addEventListener('DOMContentLoaded', () => {
+    // 頁面載入後執行的初始化工作
+    loadStories(); // 可以在頁面載入時加載現有故事
+});
