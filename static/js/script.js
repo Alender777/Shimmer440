@@ -117,39 +117,40 @@ document.addEventListener("DOMContentLoaded", function() {
       closeModalButton.addEventListener('click', closeModal);
     }
   
-        window.onload = function loadStories() {
-        $.ajax({
-            url: '/stories', 
-            type: 'GET',
-            success: function(stories) {
-                $('#storiesContainer').empty();
-                console.log("Number of stories:", stories.length);
-                
-                var rowDiv = $('<div class="row"></div>');
-                $('#storiesContainer').append(rowDiv);
-
-                stories.forEach(function(story, index) {
-                    if (index % 3 === 0 && index !== 0) {
-                        rowDiv = $('<div class="row"></div>');
-                        $('#storiesContainer').append(rowDiv);
-                    }
-                    var storyDiv = $(`<div class="story-img${(index % 3) + 1}"></div>`);      
-                    storyDiv.append(`
-                        <img src="../static/img/tiles/forever.png" alt="">
-                        <h2>${story.name}</h2>
-                        <p>${story.content.length > 32 ? story.content.substring(0, 32) + '...' : story.content}</p>
-                    `);
-                    rowDiv.append(storyDiv);
-
-                    storyDiv.on('click', function(event) {
-                        showDetails(event, story);
-                    });
-                });
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error fetching stories:', textStatus, errorThrown);
-            }
-        });
+    window.onload = function loadStories() {
+      $.ajax({
+          url: '/stories', 
+          type: 'GET',
+          success: function(stories) {
+              $('#storiesContainer').empty();
+              console.log("Number of stories:", stories.length);
+              
+              var storiesDiv = $('<div class="story-img"></div>');
+              var rowDiv = $('<div class="row"></div>');
+              $('#storiesContainer').append(storiesDiv);
+  
+              stories.slice(0, 6).forEach(function(story, index) {
+                  if (index % 3 === 0 && index !== 0) {
+                      rowDiv = $('<div class="row"></div>');
+                      $('#storiesContainer').append(rowDiv);
+                  }
+                  var storyDiv = $(`<div class="story-img${(index % 3) + 1}"></div>`);      
+                  storyDiv.append(`
+                      <img src="../static/img/tiles/forever.png" alt="">
+                      <h2>${story.name}</h2>
+                      <p>${story.content.length > 32 ? story.content.substring(0, 32) + '...' : story.content}</p>
+                  `);
+                  storiesDiv.append(storyDiv);
+  
+                  storyDiv.on('click', function(event) {
+                      showDetails(event, story);
+                  });
+              });
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              console.error('Error fetching stories:', textStatus, errorThrown);
+          }
+      });
     }
   
     loadStories();
